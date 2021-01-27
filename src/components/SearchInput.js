@@ -2,17 +2,22 @@ import React from 'react';
 import Magnifier from '../assets/magnifying-glass.svg';
 import Cross from '../assets/cross.svg';
 
-const SearchInput = ({ value, onInput, onSearch }) => {
+const SearchInput = ({ value, setValue, onSearch, onReset }) => {
   return (
     <form onSubmit={onSearch} className='search'>
       <input
         type='text'
         placeholder='Search'
         value={value}
-        onChange={onInput}
+        onChange={e => setValue(e.currentTarget.value)}
         className='search__field'
       />
-      <button type='submit' disabled={!value} className='search__btn'>
+      <button
+        type='reset'
+        disabled={!value}
+        onClick={() => setValue('')}
+        className='search__btn'
+      >
         <img
           className='search__btn-icon'
           src={value ? Cross : Magnifier}
