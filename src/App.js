@@ -1,23 +1,15 @@
 import React from 'react';
 
-import SearchInput from './components/SearchInput';
+import Search from './components/Search';
 
 import useSearch from './hooks/useSearch';
 
 function App() {
-  const { searchQuery, setSearchQuery, results } = useSearch();
+  const shipSearch = useSearch();
+
   return (
     <div className='container'>
-      <div className='canvas'>
-        <SearchInput value={searchQuery} setValue={setSearchQuery} />
-      </div>
-      <ul className='results'>
-        {results.map(ship => (
-          <li className='results__item' key={ship.id}>
-            {ship.name}
-          </li>
-        ))}
-      </ul>
+      <Search {...shipSearch} />
     </div>
   );
 }
