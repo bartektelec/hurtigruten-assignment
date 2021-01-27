@@ -8,7 +8,24 @@ async function getShipsByName(query) {
   return found;
 }
 
+// function debounce(func, wait) {
+//   let timeout;
+//   return function () {
+//     const context = this,
+//       args = arguments;
+//     const later = function () {
+//       timeout = null;
+//       if (!immediate) func.apply(context, args);
+//     };
+//     clearTimeout(timeout);
+//     timeout = setTimeout(later, wait);
+//     if (!timeout) func.apply(context, args);
+//   };
+// }
+
 const useSearch = () => {
+  let timeout;
+
   const [searchQuery, setSearchQuery] = useState('');
   const [results, setResults] = useState([]);
 
@@ -27,7 +44,7 @@ const useSearch = () => {
     if (!searchQuery) return setResults([]);
     performSearch();
   }, [performSearch, searchQuery]);
-  return { results, searchQuery, setSearchQuery };
+  return { results, searchQuery, setSearchQuery, performSearch };
 };
 
 export default useSearch;
