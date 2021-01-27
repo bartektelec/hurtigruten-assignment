@@ -1,34 +1,73 @@
-// __tests__/hidden-message.js
-// these imports are something you'd normally configure Jest to import for you
-// automatically. Learn more in the setup docs: https://testing-library.com/docs/react-testing-library/setup#cleanup
 import '@testing-library/jest-dom';
-// NOTE: jest-dom adds handy assertions to Jest and is recommended, but not required
-
 import * as React from 'react';
-import {
-  render,
-  fireEvent,
-  screen,
-  act,
-  waitFor,
-} from '@testing-library/react';
+import { render, screen, act, queryByTitle } from '@testing-library/react';
 import { renderHook } from '@testing-library/react-hooks/pure';
 
-import useSearch from '../hooks/useSearch';
+import useSearch, { API_URL } from '../hooks/useSearch';
 import Search from '../components/Search';
 
+const mockData = [
+  {
+    id: 'FM',
+    name: 'MS Finnmarken',
+    url: 'hurtigruten.no/skip/ms-finnmarken/',
+  },
+  {
+    id: 'FR',
+    name: 'MS Fram',
+    url: 'hurtigruten.no/skip/ms-fram/',
+  },
+  {
+    id: 'FN',
+    name: 'MS Fridtjof Nansen',
+    url: 'hurtigruten.no/skip/ms-fridtjof-nansen/',
+  },
+  {
+    id: 'KH',
+    name: 'MS Kong Harald',
+    url: 'hurtigruten.no/skip/ms-kong-harald/',
+  },
+  {
+    id: 'LO',
+    name: 'MS Lofoten',
+    url: 'hurtigruten.no/skip/ms-lofoten/',
+  },
+  {
+    id: 'MS',
+    name: 'MS Midnatsol',
+    url: 'hurtigruten.no/skip/ms-midnatsol/',
+  },
+];
+
 describe('Search component', () => {
-  global.fetch = query =>
-    test('should manage search query', async () => {
-      const { result } = renderHook(() => useSearch());
-      render(<Search {...result.current} />);
+  global.fetch = query => {
+    query.replace(API_URL, '');
+    return mockData.filter(ship =>
+      ship.name.toLowerCase().includes(query.toLowerCase())
+    );
+  };
+  test('should manage search query', async () => {
+    const { result } = renderHook(() => useSearch());
+    render(<Search {...result.current} />);
 
-      expect(screen.queryByPlaceholderText('Search')).toBeInTheDocument();
+    expect(screen.queryByPlaceholderText('Search')).toBeInTheDocument();
 
-      act(() => {
-        result.current.setSearchQuery('MS');
-      });
-
-      await expect(result.current.searchQuery).toEqual('MS');
+    act(() => {
+      result.current.setSearchQuery('MS');
     });
+
+    expect(result.current.searchQuery).toEqual('MS');
+  });
+
+  test('should find and dispay items', async () => {
+    const { result } = renderHook(() => useSearch());
+    render(<Search {...result.current} />);
+
+    result.current.setSearchQuery('lofoten');
+
+    setTimeout(() => {
+      expect(screen.getByText(/lofoten/gi)).toBeInTheDocument();
+      expect(screen.getByText(/fram/gi)).not.toBeInTheDocument();
+    }, 300);
+  });
 });

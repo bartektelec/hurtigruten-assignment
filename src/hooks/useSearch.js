@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useEffect, useRef } from 'react';
 
-const API_URL = 'http://localhost:4000/api/ships/';
+export const API_URL = 'http://localhost:4000/api/ships/';
 
 async function getShipsByName(query) {
   const response = await fetch(API_URL + query);
