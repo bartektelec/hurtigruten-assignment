@@ -8,18 +8,9 @@
 
 body {
   font-family: sans-serif;
-}
-
-.canvas {
-  position: relative;
-}
-
-.canvas > img {
-  position: absolute;
-  left: 0;
-  right: 0;
-  transform: translateY(-21px);
-  opacity: 0.25;
+  --text-result: #383735;
+  --border-result: 1px solid #d1cecc;
+  --border-search: 1px solid rgba(0, 0, 0, 0.6);
 }
 
 #root {
@@ -46,17 +37,17 @@ body {
   display: flex;
   padding: 0.75rem 1.125rem;
   font-size: 1.125rem;
-  color: #383735;
-  border: 1px solid #d1cecc;
+  color: var(--text-result);
+  border: var(--border-result);
 }
 
 .search {
-  border: 1px solid #666666;
+  border: var(--border-search);
   display: inline-flex;
 }
 
 .search:focus-within {
-  outline: 2px solid rgb(192, 192, 243);
+  outline: 2px solid rgba(192, 192, 243, 0.5);
 }
 
 .search__field {

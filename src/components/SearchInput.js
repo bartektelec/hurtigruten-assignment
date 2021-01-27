@@ -2,12 +2,13 @@ import React from 'react';
 import Magnifier from '../assets/magnifying-glass.svg';
 import Cross from '../assets/cross.svg';
 
-const SearchInput = ({ value, setValue, onSearch, onReset }) => {
+const SearchInput = ({ value, setValue }) => {
   return (
-    <form onSubmit={onSearch} className='search'>
+    <form onSubmit={e => e.preventDefault()} className='search'>
       <input
         type='text'
         placeholder='Search'
+        required
         value={value}
         onChange={e => setValue(e.currentTarget.value)}
         className='search__field'
