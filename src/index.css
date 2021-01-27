@@ -21,11 +21,19 @@
   display: inline-flex;
 }
 
+.search:focus-within {
+  outline: 2px solid rgb(192, 192, 243);
+}
+
 .search__field {
   padding: 1.125rem;
   font-size: 1.125rem;
   flex: 1;
   border: none;
+}
+
+.search__field:focus {
+  outline: none;
 }
 
 .search__field::placeholder {
@@ -41,6 +49,10 @@
   background: none;
   border: none;
   cursor: pointer;
+}
+
+.search__btn:disabled {
+  cursor: not-allowed;
 }
 
 .search__btn-icon {
