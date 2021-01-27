@@ -1,0 +1,48 @@
+*,
+*::after,
+*::before {
+  box-sizing: border-box;
+}
+
+.canvas {
+  position: relative;
+}
+
+.canvas > img {
+  position: absolute;
+  left: 0;
+  right: 0;
+  transform: translateY(-21px);
+  opacity: 0.25;
+}
+
+.search {
+  border: 1px solid black;
+  display: inline-flex;
+}
+
+.search__field {
+  padding: 1.125rem;
+  font-size: 1.125rem;
+  flex: 1;
+  border: none;
+}
+
+.search__field::placeholder {
+  color: #000000;
+  opacity: 0.6;
+}
+
+.search__btn {
+  padding: 0 1.125rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.search__btn-icon {
+  width: 1.5rem;
+}
