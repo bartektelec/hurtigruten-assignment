@@ -5,11 +5,7 @@ const cors = require('cors');
 
 const port = 4000;
 
-server.use(
-  cors({
-    origin: 'http://localhost:3000',
-  })
-);
+server.use(cors());
 
 server.listen(port, () => {
   console.log(`Server listening at ${port}`);

@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useEffect, useRef } from 'react';
 
 const API_URL = 'http://localhost:4000/api/ships/';
 
@@ -8,43 +8,53 @@ async function getShipsByName(query) {
   return found;
 }
 
-// function debounce(func, wait) {
-//   let timeout;
-//   return function () {
-//     const context = this,
-//       args = arguments;
-//     const later = function () {
-//       timeout = null;
-//       if (!immediate) func.apply(context, args);
-//     };
-//     clearTimeout(timeout);
-//     timeout = setTimeout(later, wait);
-//     if (!timeout) func.apply(context, args);
-//   };
-// }
+function debounce(func, wait) {
+  let timeout;
+  return function () {
+    const context = this,
+      args = arguments;
+    const later = function () {
+      timeout = null;
+      func.apply(context, args);
+    };
+    clearTimeout(timeout);
+    timeout = setTimeout(later, wait);
+    if (!timeout) func.apply(context, args);
+  };
+}
 
 const useSearch = () => {
-  let timeout;
-
+  const mounted = useRef(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [results, setResults] = useState([]);
 
-  const performSearch = useCallback(() => {
-    (async () => {
-      try {
-        const response = await getShipsByName(searchQuery);
-        setResults(await response);
-      } catch (error) {
-        console.error(error);
-      }
-    })();
-  }, [searchQuery]);
+  const performSearch = useCallback(
+    debounce(() => {
+      (async () => {
+        try {
+          if (!mounted) return;
+          const response = await getShipsByName(searchQuery);
+          setResults(await response);
+        } catch (error) {
+          console.error(error);
+        }
+      })();
+    }, 200),
+    [searchQuery]
+  );
 
   useEffect(() => {
     if (!searchQuery) return setResults([]);
     performSearch();
   }, [performSearch, searchQuery]);
-  return { results, searchQuery, setSearchQuery, performSearch };
+
+  useEffect(() => {
+    return () => {
+      mounted.current = false;
+    };
+  }, []);
+
+  return { results, searchQuery, setSearchQuery };
 };
 
 export default useSearch;

@@ -5,10 +5,14 @@ import Cross from '../assets/cross.svg';
 const SearchInput = ({ value, setValue }) => {
   return (
     <form onSubmit={e => e.preventDefault()} className='search'>
+      <label htmlFor='searchInput' className='sr-only'>
+        Search
+      </label>
       <input
         type='text'
         placeholder='Search'
         required
+        id='searchInput'
         value={value}
         onChange={e => setValue(e.currentTarget.value)}
         className='search__field'
